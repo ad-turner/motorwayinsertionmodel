@@ -31,7 +31,7 @@ More detail on this in the main function below (I & F correspond to ins and freq
 
 // Number of cars that go out of range
 int out = 0;
-//Succesful insertions
+// Succesful insertions
 int ins = 0;
 // Sum of the speeds of all the cars on road
 int tot = 0;
@@ -105,7 +105,7 @@ void updateroad(int road[LENGTH]){
         int v=road[i];
 
         /* 
-        Only move cars
+        Only move cars (empty cells are ignored)
         By design if the speed is -1 there is no car
         */
 
@@ -135,7 +135,6 @@ void updateroad(int road[LENGTH]){
         // 2. Security deceleration
         /*
         If there is a vehicle at less than 'v' places ahead, the car slows down to the distance j between the two cars minus 1.
-        &&&&&&&&__---__ write smth ??
         */
 
             for (int j=1; j<v+1; j++){
@@ -200,7 +199,7 @@ void insertcar(int road[LENGTH], int IN){
 
         for (int n=r; n<LENGTH-20; n++){
 
-            /* Find the position of the car in front */
+            /* Find the position of the car behind */
 
             for (int bb=0; bb<LENGTH; bb++){
                 if (road[n-bb]!=-1){
@@ -209,7 +208,7 @@ void insertcar(int road[LENGTH], int IN){
                 }
             }
 
-            /* Find the position of the car behind */
+            /* Find the position of the car in front */
 
             for (int ff=1; ff<LENGTH; ff++){
                 if (road[n+ff]!=-1){
@@ -220,17 +219,11 @@ void insertcar(int road[LENGTH], int IN){
 
             /*
             We now insert a car according to the positions and speeds of the cars immidiately in front and behind of the insertion candidate.
+            The insertion criteria are explained in detail in the report.
 
-            A car is succesfully inserted if the following conditions are satisfied:
-            - Let b be the distance to the car behind and vb the speed of that car -
-            - Let f be the distance to the car ahead -
-            If (b>=4 and vb= 5) or (b>=3 and vb=4) or (b>=2 and vb<4):
-                If f>=5 insert with speed 4
-                If f=4 insert with speed 3
-                If f=3 insert with speed 2
-                If f=2 insert with speed 1
+            Let b be the distance to the car behind and road[n-b] the speed of that car
+            Let f be the distance to the car ahead 
 
-            Note: Theses implementation rules are valid when VMAX = 5. They should be modified if VMAX increases (not necessarily by adding one everywhere).
             */
 
             if ((b>=4 && road[n-b]==5) || (b>=3 && road[n-b]==4) || (b>=2 && road[n-b]<4)){
@@ -300,8 +293,7 @@ void printroad(int road[LENGTH]){
 
 int main() {
 
-    /* The while loop and the result and value variables are used for the piping process, where our C code uses the values provided by feed.py */
-
+    /* The while loop and the result variable are used for the piping process, where our C code uses the values provided by Python */
     int result = 0 ;
 
     /* Number of insertions per time step */
@@ -318,7 +310,7 @@ int main() {
         /* Initialize road */
         initialize(road, freq);
 
-        /* Setup for random number*/
+        /* Setup for random number */
         srand(time(NULL));
 
         for (int n=0; n<ITERATIONS; n++){
@@ -329,16 +321,16 @@ int main() {
             /* Maintain continuous flux of cars */
             keepaddingcars(road,freq);
 
-            /* Insert a car every 10 time-steps */
+            /* Insert cars every 10 time-steps */
             if (n%10==0){
                 insertcar(road, ins);
             }
         }
 
-        /* After simulation is over (n iterations have been performed), compute the number of cars on the road and their combined speed */
+        /* After simulation is over (all iterations have been performed), compute the number of cars on the road and their combined speed */
         totalspeed(road);
 
-        /* Average speed of car in cells per iteration */
+        /* Average speed of cars on road */
         float avgspeed = (float)tot/cars;
 
         /* Spacing, after full simulation run there on average is a car every 'spac' cells */
@@ -346,11 +338,11 @@ int main() {
 
         /* 
         Print the number of insertions per 10 time-steps, the average speed of cars and car density after all the time-steps.
-        They will then be treated by analyze.py using pipe.
+        They will then be treated by Python using pipe.
         */
         printf("%d,%.2f,%.2f,%d\n", ins, avgspeed*7*3.6, spac, freq);
 
-        /* Reset the number of cars that have exited to 0 */
+        /* Reset the number of cars that have exited to 0 for next use */
         out=0;
     }
     return 0;
