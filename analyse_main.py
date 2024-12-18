@@ -2,7 +2,6 @@
 This program recieves the values provided by the C program
 It also reads a csv file and turns it into a dictionnary for easy acces to the IAS values
 It then successively plots I vs IBS, I vs IBS and IAS and then a smothened version of this last graph using gaussian_filter1d
-Uncomment lines 41 49 and 57 to save the graphs as .png in the directory
 """
 
 import sys
@@ -44,8 +43,8 @@ plt.plot(x,y, label = "IBS")
 plt.xlabel('Insertions per 10s')
 plt.ylabel('Km per h')
 plt.legend()
-#plt.savefig('fig1.png')
-plt.show()
+plt.savefig('fig1.png')
+#plt.show()
 
 # Plot I vs IBS and IAS #
 plt.plot(x,y, label = "IBS")
@@ -53,8 +52,8 @@ plt.plot(x,ias, label = "IAS")
 plt.xlabel('Insertions per 10s')
 plt.ylabel('Km per h')
 plt.legend()
-#plt.savefig('fig2.png')
-plt.show()
+plt.savefig('fig2.png')
+#plt.show()
 
 # Plot I vs IBS and IAS (smoothened) #
 plt.plot(x,y, label = "IBS")
@@ -62,5 +61,5 @@ plt.plot(x,gaussian_filter1d(ias, sigma=1.5), label = "IAS")
 plt.xlabel('Insertions per 10s')
 plt.ylabel('Km per h')
 plt.legend()
-#plt.savefig('fig3.png')
-plt.show()
+plt.savefig('fig3.png')
+#plt.show()
