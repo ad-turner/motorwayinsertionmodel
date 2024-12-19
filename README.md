@@ -56,8 +56,13 @@ gcc -Wall -o model_main model_main.c -lm
 
 To produce the graphs pipe information from gennum.py to model_main.c then again to analyze_main.py like this:
 ```
+python gennum.py | ./model_main | python analyse_main.py
+```
+Depending on your editor and versions if the command above does not work try this:
+```
 python3 gennum.py | ./model_main | python3 analyse_main.py
 ```
+
 This command will run everything and generate the three graphs found in the report (Fig. 1, Fig.3 and Fig.4). Figure 2 was not generated with python, the lines were simply added by hand for illustrative purposes.
 Please understand that this is a simulation so the graphs in the report and the ones you may generate yourself can differ a little. The general trends are the same but specific values may vary slightly from one take to another.
 
