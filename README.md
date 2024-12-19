@@ -58,7 +58,7 @@ To produce the graphs pipe information from gennum.py to model_main.c then again
 ```
 python gennum.py | ./model_main | python analyse_main.py
 ```
-You may need to write python3 instead of python:
+You may need to write 'python3' instead of 'python':
 ```
 python3 gennum.py | ./model_main | python3 analyse_main.py
 ```
